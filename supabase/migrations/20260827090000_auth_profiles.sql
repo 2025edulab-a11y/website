@@ -92,14 +92,18 @@ create trigger profiles_protect_role
   for each row execute function public.protect_role_column();
 
 -- ---------- auto-create a profile row on signup ----------------
+-- Emails listed in bootstrap_admins become 'admin' automatically the
+-- first time they sign up (so there is a working admin from day one).
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  bootstrap_admins text[] := array['2025edulab@gmail.com'];
 begin
-  insert into public.profiles (id, email, full_name, avatar_url)
+  insert into public.profiles (id, email, full_name, avatar_url, role)
   values (
     new.id,
     new.email,
@@ -107,7 +111,8 @@ begin
       new.raw_user_meta_data ->> 'full_name',
       new.raw_user_meta_data ->> 'name'
     ),
-    new.raw_user_meta_data ->> 'avatar_url'
+    new.raw_user_meta_data ->> 'avatar_url',
+    case when lower(new.email) = any (bootstrap_admins) then 'admin' else 'user' end
   )
   on conflict (id) do nothing;
   return new;
@@ -128,6 +133,12 @@ select
   u.raw_user_meta_data ->> 'avatar_url'
 from auth.users u
 on conflict (id) do nothing;
+
+-- ---------- promote bootstrap admins that signed up already ----
+update public.profiles
+set role = 'admin'
+where lower(email) = any (array['2025edulab@gmail.com'])
+  and role <> 'admin';
 
 -- ---------- grants (RLS still governs row access) -------------
 grant usage on schema public to anon, authenticated;
