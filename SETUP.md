@@ -51,11 +51,12 @@ Google Cloud 프로젝트 `gen-lang-client-0666038150` 에 웹 OAuth 클라이�
 
 ---
 
-## 카카오 로그인 — 설정됨, 단 KOE205 미해결
+## 카카오 로그인 — 버튼 숨김 (비즈 앱 전환 대기)
 
-Kakao Developers 앱 **mywebsite** (앱 ID `1559059`) 를 만들고 Supabase에 연결했습니다.
-프런트엔드 버튼·핸들러, Supabase provider, Kakao 콘솔 대부분은 완료됐으나
-**아직 로그인이 끝까지 완료되지 않습니다** (아래 KOE205 참고).
+Kakao Developers 앱 **mywebsite** (앱 ID `1559059`) 를 만들고 Supabase에 연결했으나,
+아래 KOE205 때문에 로그인이 완료되지 않아 **`login.html` / `signup.html` 의 카카오 버튼을
+주석 처리**했습니다. `app.js` 의 `signInWithKakao` 와 Supabase provider 설정은 그대로 두었으므로,
+비즈 앱 전환 후 버튼 주석만 풀면 동작합니다.
 
 ### Kakao Developers 콘솔 설정값
 
@@ -78,10 +79,15 @@ Supabase gotrue 는 카카오 스코프를 `account_email profile_image profile_
 `profile_nickname` 이 중복으로 붙음). 따라서 `account_email` 을 뺄 방법이 없고, 카카오 앱에
 `account_email` 권한이 없어 동의 화면에서 **KOE205 (잘못된 요청)** 이 발생한다.
 
-**해결 방법 (택1, 둘 다 본인 카카오 계정 작업):**
-1. 카카오 앱을 **비즈 앱으로 전환** → `account_email` 을 선택 동의로 활성화.
-   (앱 아이콘 등록 + 개인 개발자는 본인인증 + 카카오비즈니스 약관 동의 필요)
-2. 비즈 앱 전환이 어려우면 카카오 로그인 버튼을 임시로 숨기고 Google + 이메일만 사용.
+에러 페이지의 "왜 에러가 발생하나요?" 에 명시됨: **"설정하지 않은 동의 항목: account_email"**.
+`profile_image` 는 선택 동의로 활성화해서 해결됐고, `account_email` 만 남았다.
+
+**다시 켜는 방법 (본인 카카오 계정 작업):**
+1. https://developers.kakao.com/console/app/1559059/config → 앱 아이콘 등록
+2. 같은 페이지 비즈니스 → **비즈 앱 전환** (개인 개발자는 본인인증 + 카카오비즈니스 약관 동의)
+3. 전환 후 https://developers.kakao.com/console/app/1559059/product/login/scope
+   → `account_email` [설정] → **선택 동의**
+4. `login.html` / `signup.html` 의 카카오 버튼 `<!-- -->` 주석 해제
 
 > 프로필 자동 생성 트리거는 `raw_user_meta_data` 의 `name` 을 읽으므로, KOE205 해결 후
 > 카카오 닉네임이 `profiles.full_name` 에 그대로 채워진다 (DB 변경 없음).
