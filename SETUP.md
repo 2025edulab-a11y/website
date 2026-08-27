@@ -9,6 +9,7 @@
 | 1 | DB 스키마 — `profiles` 테이블, user/admin 역할, RLS 정책 4개, 함수 4개, 트리거 3개 | ✅ 적용·검증 완료 |
 | 2 | 첫 관리자 — `2025edulab@gmail.com` 을 부트스트랩 관리자로 트리거에 내장. **이 이메일로 가입하면 자동 admin** | ✅ 코드에 반영 |
 | 3 | Auth URL — Site URL = GitHub Pages 주소, Redirect 허용목록에 Pages·localhost(3000/5173/8080) 등록 | ✅ 적용 완료 |
+| 4 | Google 로그인 — 웹 OAuth 클라이언트 생성, Supabase `external_google_enabled` 켬 | ✅ 적용 완료 |
 | — | 이메일 확인 — 테스트 편의를 위해 **자동 확인(mailer_autoconfirm) 켬**. 가입 즉시 로그인됨 | ✅ 적용 완료 |
 | — | 가입→프로필 자동 생성 트리거 | ✅ 실제 가입 스모크 테스트 통과 |
 
@@ -18,30 +19,34 @@
 
 ---
 
-## 남은 것 — Google 로그인 (사용자님 Google 계정 작업 필요)
+## Google 로그인 — 설정 완료
 
-Google OAuth 클라이언트는 **본인 Google Cloud 계정**에서만 만들 수 있어 대신 못 합니다.
-아래 두 값만 만들어 주시면 Supabase 쪽 연결은 바로 넣어 드립니다.
+Google Cloud 프로젝트 `gen-lang-client-0666038150` 에 웹 OAuth 클라이언트
+**"Supabase mywebsite Web"** 을 만들고 Supabase에 연결했습니다.
 
-### A. Google Cloud Console (5분)
+### Google Cloud Console 설정값
 
-1. https://console.cloud.google.com/ → 상단에서 프로젝트 생성(또는 선택)
-2. **APIs & Services → OAuth consent screen**
-   - User Type: **External** → 앱 이름, 지원 이메일 입력 → 저장 (테스트 모드로 두어도 됨)
-3. **APIs & Services → Credentials → + Create Credentials → OAuth client ID**
-   - Application type: **Web application**
-   - **Authorized JavaScript origins**
-     - `https://2025edulab-a11y.github.io`
-     - `http://localhost:3000`
-   - **Authorized redirect URIs** (아래 한 줄, 고정값)
-     - `https://mtnnquvofobsyoqbajmx.supabase.co/auth/v1/callback`
-   - **Create** → 나오는 **Client ID** 와 **Client secret** 복사
+- OAuth consent screen(브랜딩): 앱 이름 `mywebsite`, 지원/개발자 이메일 `2025edulab@gmail.com`,
+  승인된 도메인 `2025edulab-a11y.github.io` · `mtnnquvofobsyoqbajmx.supabase.co`
+- OAuth 클라이언트 (Web application)
+  - Authorized JavaScript origins
+    - `https://2025edulab-a11y.github.io`
+    - `http://localhost:3000`
+  - Authorized redirect URIs
+    - `https://mtnnquvofobsyoqbajmx.supabase.co/auth/v1/callback`
+  - Client ID: `190347483668-7pua793s07s900sosos0eeh62hovq3t9.apps.googleusercontent.com`
+    (Client secret 은 Supabase 에만 저장. 저장소에 커밋하지 않음)
+- 게시 상태: **테스트 중**. 테스트 사용자에 `2025edulab@gmail.com` 등록됨.
+  다른 계정으로 로그인하려면 대상(Audience) → 테스트 사용자에 추가하거나 "앱 게시" 로 전환.
 
-### B. 그다음
+### Supabase
 
-복사한 Client ID / Secret 두 개를 저에게 주시면 `external_google_enabled` 를 켜고
-값을 넣겠습니다. (또는 직접:
-https://supabase.com/dashboard/project/mtnnquvofobsyoqbajmx/auth/providers → Google → Enable)
+- `external_google_enabled = true`, `external_google_client_id` / `external_google_secret` 설정됨.
+- 대시보드: https://supabase.com/dashboard/project/mtnnquvofobsyoqbajmx/auth/providers → Google
+
+> 이전에 만들었던 **데스크톱** 타입 클라이언트("데스크톱 클라이언트 1")는
+> 커스텀 redirect URI 를 지원하지 않아 `redirect_uri_mismatch` 가 났고, 웹 타입으로 교체함.
+> 이제 안 쓰이므로 삭제 가능.
 
 ---
 
