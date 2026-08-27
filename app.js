@@ -60,20 +60,18 @@ export async function signOut() {
 
 // ---------- 소셜 로그인 ------------------------------------------
 // provider: "google" | "kakao"
-async function signInWith(provider, label, next, scopes) {
+async function signInWith(provider, label, next) {
   const base = location.href.replace(/[^/]*$/, ""); // 현재 디렉터리 URL
   const redirectTo = base + (next || "mypage.html");
-  const options = { redirectTo };
-  if (scopes) options.scopes = scopes;
-  const { error } = await supabase.auth.signInWithOAuth({ provider, options });
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo },
+  });
   if (error) alert(label + " 로그인 오류: " + error.message);
 }
 
 export const signInWithGoogle = (next) => signInWith("google", "Google", next);
-// 카카오 앱에 활성화된 동의항목이 닉네임뿐이라 스코프를 그것만으로 제한한다.
-// (Supabase 기본값은 account_email 을 포함해 KOE205 발생)
-export const signInWithKakao = (next) =>
-  signInWith("kakao", "카카오", next, "profile_nickname");
+export const signInWithKakao = (next) => signInWith("kakao", "카카오", next);
 
 // ---------- 내비게이션 인증 영역 렌더 -----------------------------
 export async function renderNavAuth() {
