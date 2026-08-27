@@ -58,16 +58,20 @@ export async function signOut() {
   location.href = "index.html";
 }
 
-// ---------- Google 로그인 ------------------------------------------
-export async function signInWithGoogle(next) {
+// ---------- 소셜 로그인 ------------------------------------------
+// provider: "google" | "kakao"
+async function signInWith(provider, label, next) {
   const base = location.href.replace(/[^/]*$/, ""); // 현재 디렉터리 URL
   const redirectTo = base + (next || "mypage.html");
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
+    provider,
     options: { redirectTo },
   });
-  if (error) alert("Google 로그인 오류: " + error.message);
+  if (error) alert(label + " 로그인 오류: " + error.message);
 }
+
+export const signInWithGoogle = (next) => signInWith("google", "Google", next);
+export const signInWithKakao = (next) => signInWith("kakao", "카카오", next);
 
 // ---------- 내비게이션 인증 영역 렌더 -----------------------------
 export async function renderNavAuth() {

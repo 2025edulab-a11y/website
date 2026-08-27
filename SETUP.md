@@ -10,6 +10,7 @@
 | 2 | 첫 관리자 — `2025edulab@gmail.com` 을 부트스트랩 관리자로 트리거에 내장. **이 이메일로 가입하면 자동 admin** | ✅ 코드에 반영 |
 | 3 | Auth URL — Site URL = GitHub Pages 주소, Redirect 허용목록에 Pages·localhost(3000/5173/8080) 등록 | ✅ 적용 완료 |
 | 4 | Google 로그인 — 웹 OAuth 클라이언트 생성, Supabase `external_google_enabled` 켬 | ✅ 적용 완료 |
+| 5 | 카카오 로그인 — Kakao 앱 생성, 카카오 로그인·Client Secret 활성화, Supabase `external_kakao_enabled` 켬 | ✅ 적용·테스트 완료 |
 | — | 이메일 확인 — 테스트 편의를 위해 **자동 확인(mailer_autoconfirm) 켬**. 가입 즉시 로그인됨 | ✅ 적용 완료 |
 | — | 가입→프로필 자동 생성 트리거 | ✅ 실제 가입 스모크 테스트 통과 |
 
@@ -47,6 +48,29 @@ Google Cloud 프로젝트 `gen-lang-client-0666038150` 에 웹 OAuth 클라이�
 > 이전에 만들었던 **데스크톱** 타입 클라이언트("데스크톱 클라이언트 1")는
 > 커스텀 redirect URI 를 지원하지 않아 `redirect_uri_mismatch` 가 났고, 웹 타입으로 교체함.
 > 이제 안 쓰이므로 삭제 가능.
+
+---
+
+## 카카오 로그인 — 설정 완료
+
+Kakao Developers 앱 **mywebsite** (앱 ID `1559059`) 를 만들고 Supabase에 연결했습니다.
+
+### Kakao Developers 콘솔 설정값
+
+- 카카오 로그인: **활성화 ON** (OpenID Connect 는 미사용)
+- Redirect URI: `https://mtnnquvofobsyoqbajmx.supabase.co/auth/v1/callback`
+- 동의항목: 닉네임(`profile_nickname`) = **필수 동의**.
+  이메일(`account_email`) 은 비즈 앱 전환 전까지 권한 없음이라 미설정.
+- REST API 키 (= Supabase client id): `5599f32b049a7d9135f363dd956700d8`
+- 클라이언트 시크릿(카카오 로그인 코드): **활성화 ON**. 값은 Supabase 에만 저장, 저장소에 커밋 안 함.
+
+### Supabase
+
+- `external_kakao_enabled = true`, `external_kakao_client_id` / `external_kakao_secret` 설정됨.
+- 대시보드: https://supabase.com/dashboard/project/mtnnquvofobsyoqbajmx/auth/providers → Kakao
+
+> 프로필 자동 생성 트리거는 `raw_user_meta_data` 의 `name` 을 읽으므로 카카오 닉네임이
+> `profiles.full_name` 에 그대로 채워짐 (DB 변경 없음).
 
 ---
 

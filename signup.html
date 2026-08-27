@@ -42,6 +42,13 @@
       Google로 가입하기
     </button>
 
+    <button class="btn-kakao" id="kakao">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#191600" d="M12 3C6.5 3 2 6.5 2 10.8c0 2.8 1.9 5.2 4.7 6.6-.2.7-.7 2.6-.8 3-.1.5.2.5.4.4.3-.1 2.7-1.8 3.7-2.5.7.1 1.4.2 2 .2 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/>
+      </svg>
+      카카오로 가입하기
+    </button>
+
     <div class="divider">또는</div>
 
     <form id="form">
@@ -65,7 +72,7 @@
 </main>
 
 <script type="module">
-  import { supabase, renderNavAuth, signInWithGoogle } from "./app.js";
+  import { supabase, renderNavAuth, signInWithGoogle, signInWithKakao } from "./app.js";
 
   renderNavAuth();
 
@@ -79,6 +86,9 @@
 
   document.getElementById("google").addEventListener("click", () =>
     signInWithGoogle("mypage.html")
+  );
+  document.getElementById("kakao").addEventListener("click", () =>
+    signInWithKakao("mypage.html")
   );
 
   document.getElementById("form").addEventListener("submit", async (e) => {
