@@ -1,0 +1,394 @@
+/* =========================================================
+   Aurora — Apple.com 디자인 언어 참고 학습용 클론
+   ========================================================= */
+
+:root {
+  --black: #1d1d1f;
+  --white: #ffffff;
+  --grey-bg: #f5f5f7;
+  --grey-text: #6e6e73;
+  --blue: #0071e3;
+  --blue-hover: #0077ed;
+  --nav-h: 44px;
+  --radius: 18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--black);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+}
+
+img { max-width: 100%; display: block; }
+
+/* =========================================================
+   Global Nav  — 반투명 + backdrop blur (Apple 시그니처)
+   ========================================================= */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  height: var(--nav-h);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.nav-inner {
+  max-width: 1024px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 1; }
+
+.nav-links {
+  display: flex;
+  gap: 34px;
+  flex: 1;
+  justify-content: center;
+}
+.nav-links a {
+  font-size: 12px;
+  color: var(--black);
+  text-decoration: none;
+  opacity: 0.82;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { opacity: 1; }
+
+.nav-actions { display: flex; align-items: center; gap: 18px; }
+.nav-icon {
+  background: none;
+  border: 0;
+  color: var(--black);
+  opacity: 0.82;
+  cursor: pointer;
+  display: flex;
+}
+.nav-icon:hover { opacity: 1; }
+
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-burger span {
+  width: 17px;
+  height: 1px;
+  background: var(--black);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-burger[aria-expanded="true"] span:first-child { transform: translateY(3px) rotate(45deg); }
+.nav-burger[aria-expanded="true"] span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+.nav-drawer {
+  display: none;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 8px 22px 22px;
+}
+.nav-drawer a {
+  padding: 14px 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.nav-drawer.open { display: flex; }
+
+/* =========================================================
+   Stage — 풀블리드 히어로 섹션 (교차 톤)
+   ========================================================= */
+.stage {
+  text-align: center;
+  padding: 54px 22px 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 620px;
+}
+.stage--light { background: var(--white); color: var(--black); }
+.stage--dark { background: #000; color: #f5f5f7; }
+
+.stage-copy { max-width: 720px; }
+.stage h1 {
+  font-size: 56px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.stage-sub {
+  font-size: 26px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+.stage-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stage-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* =========================================================
+   Buttons & Links — Apple 스타일 pill / chevron 링크
+   ========================================================= */
+.btn {
+  background: var(--blue);
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  padding: 8px 22px;
+  border-radius: 980px;
+  transition: background 0.2s;
+}
+.btn:hover { background: var(--blue-hover); }
+
+.link {
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 17px;
+}
+.link:hover { text-decoration: underline; }
+.link--onaccent { color: #fff; }
+
+/* =========================================================
+   Grid — 2-up 타일
+   ========================================================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+  background: var(--grey-bg);
+}
+.tile {
+  border-radius: var(--radius);
+  text-align: center;
+  padding: 46px 22px 0;
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.tile--light { background: var(--grey-bg); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+.tile--dark  { background: #000; color: #f5f5f7; }
+.tile--accent { background: linear-gradient(135deg, #6a5acd, #b06ab3); color: #fff; }
+
+.tile h2 {
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.tile-sub { font-size: 19px; font-weight: 500; margin-top: 6px; }
+.tile .stage-links { margin-top: 14px; }
+
+/* =========================================================
+   Device mockups — 순수 CSS (외부 이미지/상표 미사용)
+   ========================================================= */
+.device { position: relative; margin-top: auto; }
+
+.device--phone {
+  width: 210px; height: 420px;
+  background: linear-gradient(160deg, #2b2b2e, #0a0a0c);
+  border-radius: 42px;
+  padding: 12px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+}
+.device--phone .device-screen {
+  width: 100%; height: 100%;
+  border-radius: 32px;
+  background: linear-gradient(200deg, #ff6ec4, #7873f5 55%, #4ade80);
+}
+.device--phone .device-notch {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  width: 90px; height: 22px; background: #0a0a0c; border-radius: 0 0 14px 14px;
+}
+
+.device--book {
+  width: 460px; max-width: 100%;
+}
+.device--book .device-lid {
+  height: 280px;
+  background: linear-gradient(160deg, #3a3a3d, #161618);
+  border-radius: 16px 16px 4px 4px;
+  padding: 10px;
+}
+.device--book .device-lid::after {
+  content: "";
+  display: block; width: 100%; height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(200deg, #89f7fe, #66a6ff);
+}
+.device--book .device-base {
+  height: 16px;
+  background: linear-gradient(#c8c8cc, #9a9aa0);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+.device--book .device-base::after {
+  content: ""; display: block; width: 90px; height: 5px;
+  background: #7c7c82; border-radius: 0 0 6px 6px; margin: 0 auto;
+}
+
+.device--watch {
+  width: 150px; height: 180px;
+  background: linear-gradient(160deg, #3a3a3d, #161618);
+  border-radius: 44px;
+  padding: 14px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+.device--watch .device-screen {
+  width: 100%; height: 100%; border-radius: 30px;
+  background: linear-gradient(200deg, #f6d365, #fda085);
+}
+.device--watch .device-crown {
+  position: absolute; right: -5px; top: 60px;
+  width: 8px; height: 26px; background: #7c7c82; border-radius: 4px;
+}
+
+.device--tab {
+  width: 300px; height: 400px;
+  background: linear-gradient(160deg, #2b2b2e, #0a0a0c);
+  border-radius: 26px;
+  padding: 12px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+}
+.device--tab .device-screen {
+  width: 100%; height: 100%; border-radius: 16px;
+  background: linear-gradient(200deg, #a8ff78, #78ffd6);
+}
+
+.glyph {
+  margin-top: auto;
+  font-size: 180px;
+  font-weight: 200;
+  line-height: 1;
+  opacity: 0.9;
+  padding-bottom: 30px;
+}
+
+/* =========================================================
+   Story strip
+   ========================================================= */
+.story {
+  background: var(--grey-bg);
+  text-align: center;
+  padding: 100px 22px;
+}
+.story-kicker {
+  font-size: 21px;
+  color: var(--grey-text);
+  font-weight: 600;
+}
+.story h2 {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 6px 0 18px;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.foot {
+  background: var(--grey-bg);
+  color: var(--grey-text);
+  font-size: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+.foot-inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 20px 22px 40px;
+}
+.foot-legal { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.foot-legal strong { color: var(--black); }
+
+.foot-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.foot-col h3 { font-size: 12px; color: var(--black); margin-bottom: 8px; }
+.foot-col a {
+  display: block;
+  color: var(--grey-text);
+  text-decoration: none;
+  padding: 4px 0;
+}
+.foot-col a:hover { text-decoration: underline; color: var(--black); }
+
+.foot-copy { padding-top: 16px; }
+
+/* =========================================================
+   Reveal on scroll
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 833px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .grid { grid-template-columns: 1fr; }
+  .foot-cols { grid-template-columns: repeat(2, 1fr); }
+  .stage h1 { font-size: 40px; }
+  .stage-sub { font-size: 21px; }
+  .tile h2 { font-size: 30px; }
+  .story h2 { font-size: 32px; }
+  .device--book { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { transition: none; opacity: 1; transform: none; }
+}

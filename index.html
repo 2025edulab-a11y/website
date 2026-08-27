@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aurora — Think different, again.</title>
+<meta name="description" content="Apple.com의 구조와 디자인 언어를 참고해 만든 학습용 클론 사이트입니다." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ===== Global Nav ===== -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" aria-label="Aurora 홈">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="currentColor" d="M12 2c2.2 2.4 3.3 5 3.3 7.6 0 4-2.6 7.4-3.3 8.4-.7-1-3.3-4.4-3.3-8.4C8.7 7 9.8 4.4 12 2zm0 20c1.4-1 2.4-2.4 3-4-1 .5-2 .8-3 .8s-2-.3-3-.8c.6 1.6 1.6 3 3 4z"/>
+      </svg>
+    </a>
+    <nav class="nav-links" aria-label="주요">
+      <a href="#story">스토리</a>
+      <a href="#phone">Aurora Phone</a>
+      <a href="#book">Aurora Book</a>
+      <a href="#watch">Aurora Watch</a>
+      <a href="#tab">Aurora Tab</a>
+      <a href="#support">지원</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="nav-icon" aria-label="검색">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M10 2a8 8 0 015.3 14l6 6-1.4 1.4-6-6A8 8 0 1110 2zm0 2a6 6 0 100 12 6 6 0 000-12z"/></svg>
+      </button>
+      <button class="nav-icon" aria-label="장바구니">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7 7V6a5 5 0 0110 0v1h3v14a1 1 0 01-1 1H5a1 1 0 01-1-1V7h3zm2 0h6V6a3 3 0 00-6 0v1z"/></svg>
+      </button>
+      <button class="nav-burger" aria-label="메뉴 열기" aria-expanded="false" id="burger">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="nav-drawer" id="drawer">
+    <a href="#story">스토리</a>
+    <a href="#phone">Aurora Phone</a>
+    <a href="#book">Aurora Book</a>
+    <a href="#watch">Aurora Watch</a>
+    <a href="#tab">Aurora Tab</a>
+    <a href="#support">지원</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== Hero: 플래그십 제품 ===== -->
+  <section class="stage stage--dark" id="phone">
+    <div class="stage-copy">
+      <h1>Aurora Phone</h1>
+      <p class="stage-sub">빛을 담다.</p>
+      <div class="stage-links">
+        <a href="#" class="btn">구입하기</a>
+        <a href="#" class="link">더 알아보기 ›</a>
+      </div>
+    </div>
+    <div class="stage-visual">
+      <div class="device device--phone">
+        <div class="device-screen"></div>
+        <div class="device-notch"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hero 2: 라이트 톤 ===== -->
+  <section class="stage stage--light" id="book">
+    <div class="stage-copy">
+      <h1>Aurora Book Pro</h1>
+      <p class="stage-sub">압도적인 하루의 성능.</p>
+      <div class="stage-links">
+        <a href="#" class="btn">구입하기</a>
+        <a href="#" class="link">더 알아보기 ›</a>
+      </div>
+    </div>
+    <div class="stage-visual">
+      <div class="device device--book">
+        <div class="device-lid"></div>
+        <div class="device-base"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2-up 타일 그리드 ===== -->
+  <section class="grid">
+    <article class="tile tile--light" id="watch">
+      <div class="tile-copy">
+        <h2>Aurora Watch</h2>
+        <p class="tile-sub">건강을 손목 위에서.</p>
+        <div class="stage-links">
+          <a href="#" class="link">더 알아보기 ›</a>
+          <a href="#" class="link">구입하기 ›</a>
+        </div>
+      </div>
+      <div class="device device--watch">
+        <div class="device-screen"></div>
+        <div class="device-crown"></div>
+      </div>
+    </article>
+
+    <article class="tile tile--dark" id="tab">
+      <div class="tile-copy">
+        <h2>Aurora Tab</h2>
+        <p class="tile-sub">놀랍도록 얇게, 놀랍도록 강력하게.</p>
+        <div class="stage-links">
+          <a href="#" class="link">더 알아보기 ›</a>
+          <a href="#" class="link">구입하기 ›</a>
+        </div>
+      </div>
+      <div class="device device--tab">
+        <div class="device-screen"></div>
+      </div>
+    </article>
+
+    <article class="tile tile--accent">
+      <div class="tile-copy">
+        <h2>Aurora+</h2>
+        <p class="tile-sub">하나의 구독으로 즐기는 모든 것.</p>
+        <div class="stage-links">
+          <a href="#" class="link link--onaccent">체험하기 ›</a>
+        </div>
+      </div>
+      <div class="glyph glyph--plus">+</div>
+    </article>
+
+    <article class="tile tile--light">
+      <div class="tile-copy">
+        <h2>Trade In</h2>
+        <p class="tile-sub">쓰던 기기를 반납하고 더 저렴하게.</p>
+        <div class="stage-links">
+          <a href="#" class="link">예상 보상가 확인 ›</a>
+        </div>
+      </div>
+      <div class="glyph glyph--loop">↻</div>
+    </article>
+  </section>
+
+  <!-- ===== 스토리 스트립 ===== -->
+  <section class="story" id="story">
+    <p class="story-kicker">The Aurora Story</p>
+    <h2>기술은 사람을 향할 때<br />가장 아름답습니다.</h2>
+    <a href="#" class="link">우리의 이야기 보기 ›</a>
+  </section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="foot" id="support">
+  <div class="foot-inner">
+    <p class="foot-legal">
+      이 사이트는 apple.com의 정보 구조와 비주얼 디자인 언어를 분석해 제작한
+      <strong>학습용 클론</strong>입니다. Apple 및 관련 상표·제품명·이미지는
+      사용하지 않았으며, 실제 Apple과 무관합니다.
+    </p>
+    <nav class="foot-cols" aria-label="푸터">
+      <div class="foot-col">
+        <h3>제품 둘러보기</h3>
+        <a href="#phone">Aurora Phone</a>
+        <a href="#book">Aurora Book</a>
+        <a href="#watch">Aurora Watch</a>
+        <a href="#tab">Aurora Tab</a>
+      </div>
+      <div class="foot-col">
+        <h3>서비스</h3>
+        <a href="#">Aurora+</a>
+        <a href="#">클라우드 저장공간</a>
+        <a href="#">뮤직</a>
+        <a href="#">아케이드</a>
+      </div>
+      <div class="foot-col">
+        <h3>스토어</h3>
+        <a href="#">매장 찾기</a>
+        <a href="#">주문 상태</a>
+        <a href="#">쇼핑 도움말</a>
+        <a href="#">Trade In</a>
+      </div>
+      <div class="foot-col">
+        <h3>Aurora 정보</h3>
+        <a href="#">뉴스룸</a>
+        <a href="#">채용</a>
+        <a href="#">투자정보</a>
+        <a href="#">윤리 및 준법</a>
+      </div>
+    </nav>
+    <p class="foot-copy">Copyright © 2026 Aurora Demo. 학습 목적의 비상업적 예제입니다.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
