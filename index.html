@@ -32,6 +32,7 @@
       <button class="nav-icon" aria-label="장바구니">
         <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7 7V6a5 5 0 0110 0v1h3v14a1 1 0 01-1 1H5a1 1 0 01-1-1V7h3zm2 0h6V6a3 3 0 00-6 0v1z"/></svg>
       </button>
+      <span class="nav-auth" id="nav-auth"></span>
       <button class="nav-burger" aria-label="메뉴 열기" aria-expanded="false" id="burger">
         <span></span><span></span>
       </button>
@@ -191,5 +192,9 @@
 </footer>
 
 <script src="script.js"></script>
+<script type="module">
+  import { renderNavAuth } from "./app.js";
+  renderNavAuth();
+</script>
 </body>
 </html>

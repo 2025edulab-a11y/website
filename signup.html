@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>회원가입 — Aurora</title>
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html" aria-label="Aurora 홈">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2c2.2 2.4 3.3 5 3.3 7.6 0 4-2.6 7.4-3.3 8.4-.7-1-3.3-4.4-3.3-8.4C8.7 7 9.8 4.4 12 2zm0 20c1.4-1 2.4-2.4 3-4-1 .5-2 .8-3 .8s-2-.3-3-.8c.6 1.6 1.6 3 3 4z"/></svg>
+    </a>
+    <nav class="nav-links" aria-label="주요">
+      <a href="index.html#phone">Aurora Phone</a>
+      <a href="index.html#book">Aurora Book</a>
+      <a href="index.html#watch">Aurora Watch</a>
+      <a href="index.html#tab">Aurora Tab</a>
+    </nav>
+    <div class="nav-actions"><span class="nav-auth" id="nav-auth"></span></div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="card">
+    <h1>회원가입</h1>
+    <p class="sub">몇 초면 끝납니다</p>
+
+    <div class="msg err" id="msg"></div>
+    <div class="msg ok" id="ok"></div>
+
+    <button class="btn-google" id="google">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.7 2.4 30.3 0 24 0 14.6 0 6.4 5.4 2.5 13.2l7.9 6.1C12.3 13.2 17.6 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.5c-.5 2.9-2.2 5.3-4.7 7l7.3 5.7c4.3-3.9 6.9-9.8 6.9-17.2z"/>
+        <path fill="#FBBC05" d="M10.4 28.3a14.5 14.5 0 0 1 0-8.6l-7.9-6.1a24 24 0 0 0 0 20.8l7.9-6.1z"/>
+        <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.3-5.7c-2 1.4-4.7 2.3-8.6 2.3-6.4 0-11.7-3.7-13.6-9.8l-7.9 6.1C6.4 42.6 14.6 48 24 48z"/>
+      </svg>
+      Google로 가입하기
+    </button>
+
+    <div class="divider">또는</div>
+
+    <form id="form">
+      <div class="field">
+        <label for="name">이름</label>
+        <input type="text" id="name" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="email">이메일</label>
+        <input type="email" id="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="password">비밀번호 (6자 이상)</label>
+        <input type="password" id="password" autocomplete="new-password" minlength="6" required />
+      </div>
+      <button type="submit" class="btn-block" id="submit">가입하기</button>
+    </form>
+
+    <p class="alt">이미 계정이 있으신가요? <a href="login.html">로그인</a></p>
+  </div>
+</main>
+
+<script type="module">
+  import { supabase, renderNavAuth, signInWithGoogle } from "./app.js";
+
+  renderNavAuth();
+
+  const msg = document.getElementById("msg");
+  const ok = document.getElementById("ok");
+  const showErr = (t) => { msg.textContent = t; msg.classList.add("show"); };
+
+  supabase.auth.getSession().then(({ data }) => {
+    if (data.session) location.replace("mypage.html");
+  });
+
+  document.getElementById("google").addEventListener("click", () =>
+    signInWithGoogle("mypage.html")
+  );
+
+  document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.classList.remove("show");
+    ok.classList.remove("show");
+    const btn = document.getElementById("submit");
+    btn.disabled = true;
+    btn.textContent = "가입 중…";
+
+    const email = document.getElementById("email").value.trim();
+    const redirectTo = location.href.replace(/[^/]*$/, "") + "login.html";
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: document.getElementById("password").value,
+      options: {
+        data: { full_name: document.getElementById("name").value.trim() },
+        emailRedirectTo: redirectTo,
+      },
+    });
+
+    btn.disabled = false;
+    btn.textContent = "가입하기";
+
+    if (error) { showErr(mapError(error.message)); return; }
+
+    if (data.session) {
+      location.replace("mypage.html"); // 이메일 확인이 꺼져 있으면 바로 로그인됨
+    } else {
+      document.getElementById("form").style.display = "none";
+      ok.textContent = `${email} 로 확인 메일을 보냈습니다. 메일의 링크를 눌러 가입을 완료하세요.`;
+      ok.classList.add("show");
+    }
+  });
+
+  function mapError(m) {
+    if (/already registered/i.test(m)) return "이미 가입된 이메일입니다. 로그인해 주세요.";
+    if (/at least 6/i.test(m)) return "비밀번호는 6자 이상이어야 합니다.";
+    return m;
+  }
+</script>
+</body>
+</html>
