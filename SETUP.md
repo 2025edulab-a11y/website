@@ -51,16 +51,18 @@ Google Cloud 프로젝트 `gen-lang-client-0666038150` 에 웹 OAuth 클라이�
 
 ---
 
-## 카카오 로그인 — 설정 완료
+## 카카오 로그인 — 설정됨, 단 KOE205 미해결
 
 Kakao Developers 앱 **mywebsite** (앱 ID `1559059`) 를 만들고 Supabase에 연결했습니다.
+프런트엔드 버튼·핸들러, Supabase provider, Kakao 콘솔 대부분은 완료됐으나
+**아직 로그인이 끝까지 완료되지 않습니다** (아래 KOE205 참고).
 
 ### Kakao Developers 콘솔 설정값
 
 - 카카오 로그인: **활성화 ON** (OpenID Connect 는 미사용)
 - Redirect URI: `https://mtnnquvofobsyoqbajmx.supabase.co/auth/v1/callback`
 - 동의항목: 닉네임(`profile_nickname`) = **필수 동의**.
-  이메일(`account_email`) 은 비즈 앱 전환 전까지 권한 없음이라 미설정.
+  프로필 사진(`profile_image`) 미설정, 이메일(`account_email`) 은 **권한 없음** (비즈 앱 전환 필요).
 - REST API 키 (= Supabase client id): `5599f32b049a7d9135f363dd956700d8`
 - 클라이언트 시크릿(카카오 로그인 코드): **활성화 ON**. 값은 Supabase 에만 저장, 저장소에 커밋 안 함.
 
@@ -69,8 +71,20 @@ Kakao Developers 앱 **mywebsite** (앱 ID `1559059`) 를 만들고 Supabase에 
 - `external_kakao_enabled = true`, `external_kakao_client_id` / `external_kakao_secret` 설정됨.
 - 대시보드: https://supabase.com/dashboard/project/mtnnquvofobsyoqbajmx/auth/providers → Kakao
 
-> 프로필 자동 생성 트리거는 `raw_user_meta_data` 의 `name` 을 읽으므로 카카오 닉네임이
-> `profiles.full_name` 에 그대로 채워짐 (DB 변경 없음).
+### 남은 문제 — KOE205
+
+Supabase gotrue 는 카카오 스코프를 `account_email profile_image profile_nickname` 로 **고정**하며
+클라이언트가 넘긴 `scopes` 는 대체가 아니라 **뒤에 덧붙이기만** 한다 (검증: authorize 리다이렉트에
+`profile_nickname` 이 중복으로 붙음). 따라서 `account_email` 을 뺄 방법이 없고, 카카오 앱에
+`account_email` 권한이 없어 동의 화면에서 **KOE205 (잘못된 요청)** 이 발생한다.
+
+**해결 방법 (택1, 둘 다 본인 카카오 계정 작업):**
+1. 카카오 앱을 **비즈 앱으로 전환** → `account_email` 을 선택 동의로 활성화.
+   (앱 아이콘 등록 + 개인 개발자는 본인인증 + 카카오비즈니스 약관 동의 필요)
+2. 비즈 앱 전환이 어려우면 카카오 로그인 버튼을 임시로 숨기고 Google + 이메일만 사용.
+
+> 프로필 자동 생성 트리거는 `raw_user_meta_data` 의 `name` 을 읽으므로, KOE205 해결 후
+> 카카오 닉네임이 `profiles.full_name` 에 그대로 채워진다 (DB 변경 없음).
 
 ---
 
